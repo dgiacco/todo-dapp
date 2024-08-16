@@ -85,6 +85,21 @@ const TodoList = () => {
 
   }
 
+  const deleteTask = async (taskId: number) => {
+    if(!contract) {
+      console.error("Contract not initilized");
+      return;
+    }
+
+    try {
+      const tx = await contract.deleteTask(taskId);
+      await tx.wait();
+      fetchTasks();
+    } catch (error) {
+      console.error("Error deleting task:", error)
+    }
+  }
+
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>Todo List</h1>
@@ -139,7 +154,7 @@ const TodoList = () => {
             >
               {task.completed ? "Completed" : "Complete"}
             </button>
-            <button className="ml-2 px-2 py-1 bg-red-500 text-white rounded">
+            <button className="ml-2 px-2 py-1 bg-red-500 text-white rounded" onClick={() => deleteTask(task.id)}>
               Delete
             </button>
           </li>
