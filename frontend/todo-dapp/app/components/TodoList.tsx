@@ -34,7 +34,7 @@ const TodoList = () => {
         const tasks = await contract.getTasks();
         console.log("Fetched tasks:", tasks);
         setTasks(tasks.map((task: any) => ({
-          id: task.id.toNumber(),
+          id: task.id,
           content: task.content,
           completed: task.completed,
         })));
@@ -48,7 +48,7 @@ const TodoList = () => {
     try {
       const tasks = await contract.getTasks();
       setTasks(tasks.map((task: any) => ({
-        id: task.id.toNumber(),
+        id: task.id,
         content: task.content,
         completed: task.completed
       })));
