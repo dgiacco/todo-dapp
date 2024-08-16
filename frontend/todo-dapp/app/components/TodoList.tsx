@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { contractAddress, contractABI } from '../utils/contractInfo'
+import PendingTxModal from './PendingTxModal';
 
 const TodoList = () => {
   const [tasks, setTasks] = useState<{ id: number; content: string; completed: boolean }[]>([])
   const [newTask, setNewTask] = useState('')
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isTxPending, setIsTxPending] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -61,11 +63,14 @@ const TodoList = () => {
 
     try {
       const tx = await contract.createTask(newTask);
+      setIsTxPending(true);
       await tx.wait();
       setNewTask('');
       await fetchTasks();
     } catch (error) {
       console.error("Error creating task:", error);
+    } finally {
+      setIsTxPending(false)
     }
   };
 
@@ -74,15 +79,16 @@ const TodoList = () => {
       console.error("Contract not initialized");
       return;
     }
-
     try {
       const tx = await contract.completeTask(taskId);
-      await tx.wait();
+      setIsTxPending(true);
+      const receipt = await tx.wait();
       fetchTasks();
     } catch (error) {
       console.error("Error completing task:", error);
+    } finally {
+      setIsTxPending(false)
     }
-
   }
 
   const deleteTask = async (taskId: number) => {
@@ -93,15 +99,19 @@ const TodoList = () => {
 
     try {
       const tx = await contract.deleteTask(taskId);
+      setIsTxPending(true);
       await tx.wait();
       fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error)
+    } finally {
+      setIsTxPending(false)
     }
   }
 
   return (
     <div className='p-4'>
+      {isTxPending && <PendingTxModal />}
       <h1 className='text-2xl font-bold mb-4'>Todo List</h1>
       <div className='mb-4'>
         <input
