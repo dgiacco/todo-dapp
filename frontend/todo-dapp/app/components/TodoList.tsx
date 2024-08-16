@@ -36,24 +36,22 @@ const TodoList = () => {
 
   const fetchTasks = async () => {
     setIsLoading(true);
-  
-    setTimeout(async () => {
-      if (contract) {
-        try {
-          const tasks = await contract.getTasks();
-          setTasks(tasks.map((task: any) => ({
-            id: task.id,
-            content: task.content,
-            completed: task.completed,
-          })));
-        } catch (error) {
-          console.error("Error fetching tasks:", error);
-        }
+
+    if (contract) {
+      try {
+        const tasks = await contract.getTasks();
+        setTasks(tasks.map((task: any) => ({
+          id: task.id,
+          content: task.content,
+          completed: task.completed,
+        })));
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
       }
-      setIsLoading(false);
-    }, 3000);    
+    }
+    setIsLoading(false);
   }
-  
+
 
   const createTask = async () => {
     if (!contract) {
@@ -70,6 +68,22 @@ const TodoList = () => {
       console.error("Error creating task:", error);
     }
   };
+
+  const completeTask = async (taskId: number) => {
+    if (!contract) {
+      console.error("Contract not initialized");
+      return;
+    }
+
+    try {
+      const tx = await contract.completeTask(taskId);
+      await tx.wait();
+      fetchTasks();
+    } catch (error) {
+      console.error("Error completing task:", error);
+    }
+
+  }
 
   return (
     <div className='p-4'>
@@ -119,8 +133,11 @@ const TodoList = () => {
               }`}>
               {task.content}
             </span>
-            <button className="ml-4 px-2 py-1 bg-green-500 text-white rounded">
-              Complete
+            <button
+              className={`ml-4 px-2 py-1 ${task.completed ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"} text-white rounded`} onClick={() => completeTask(task.id)}
+              disabled={task.completed}
+            >
+              {task.completed ? "Completed" : "Complete"}
             </button>
             <button className="ml-2 px-2 py-1 bg-red-500 text-white rounded">
               Delete
