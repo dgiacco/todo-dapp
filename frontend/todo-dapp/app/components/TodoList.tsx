@@ -124,7 +124,8 @@ const TodoList = () => {
         />
         <button
           onClick={createTodo}
-          className='px-4 py-2 bg-blue-600 hover:bg-blue-400 text-white rounded'
+          className={`px-4 py-2 text-white rounded ${newTodo.trim() ? "bg-blue-600 hover:bg-blue-400" : "bg-gray-400 cursor-not-allowed"}`}
+          disabled={!newTodo.trim()}
         >
           Add Todo
         </button>
