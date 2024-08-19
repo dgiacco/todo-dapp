@@ -4,8 +4,8 @@
 
 This project is a decentralized Todo application built on Ethereum. It allows users to create, complete, and delete tasks using a smart contract deployed on the Sepolia testnet. The frontend is built with Next.js, TypeScript, and Tailwind CSS.
 
-- **Frontend Deployment:** [Vercel Deployment](https://your-vercel-deployment-link)
-- **Smart Contract on Sepolia:** [Etherscan](https://sepolia.etherscan.io/address/your-contract-address)
+- **Frontend Deployment:** [Vercel Deployment](https://todo-dapp-6ygz-fo0da9x8z-dgiaccos-projects.vercel.app/)
+- **Smart Contract on Sepolia:** [Etherscan](https://sepolia.etherscan.io/address/0xe28e02D810Aa70Ac72BBD9Ae28239B7Ff3917205)
 
 ## Tech Stack
 
