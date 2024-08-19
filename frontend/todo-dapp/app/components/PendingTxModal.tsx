@@ -22,7 +22,7 @@ const PendingTxModal = () => {
             />
           </svg>
         </div>
-        <p className="mt-2 text-center">Transaction in progress...</p>
+        <p className="mt-2 text-center text-black">Transaction in progress...</p>
       </div>
     </div>
   )

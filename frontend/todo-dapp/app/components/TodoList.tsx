@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { contractAddress, contractABI } from '../utils/contractInfo'
 import PendingTxModal from './PendingTxModal';
+import Todo from './Todo';
 
 const TodoList = () => {
-  const [tasks, setTasks] = useState<{ id: number; content: string; completed: boolean }[]>([])
-  const [newTask, setNewTask] = useState('')
+  const [todos, setTodos] = useState<{ id: number; content: string; completed: boolean }[]>([])
+  const [newTodo, setNewTodo] = useState('')
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,78 +33,78 @@ const TodoList = () => {
 
   useEffect(() => {
     if (contract) {
-      fetchTasks();
+      fetchTodos();
     }
   }, [contract])
 
-  const fetchTasks = async () => {
+  const fetchTodos = async () => {
     setIsLoading(true);
 
     if (contract) {
       try {
-        const tasks = await contract.getTasks();
-        setTasks(tasks.map((task: any) => ({
-          id: task.id,
-          content: task.content,
-          completed: task.completed,
+        const todos = await contract.getTasks();
+        setTodos(todos.map((todo: any) => ({
+          id: todo.id,
+          content: todo.content,
+          completed: todo.completed,
         })));
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.error("Error fetching todos:", error);
       }
     }
     setIsLoading(false);
   }
 
 
-  const createTask = async () => {
+  const createTodo = async () => {
     if (!contract) {
       console.error("Contract not initialized");
       return;
     }
 
     try {
-      const tx = await contract.createTask(newTask);
+      const tx = await contract.createTask(newTodo);
       setIsTxPending(true);
       await tx.wait();
-      setNewTask('');
-      await fetchTasks();
+      setNewTodo('');
+      await fetchTodos();
     } catch (error) {
-      console.error("Error creating task:", error);
+      console.error("Error creating todo:", error);
     } finally {
       setIsTxPending(false)
     }
   };
 
-  const completeTask = async (taskId: number) => {
+  const completeTodo = async (todoId: number) => {
     if (!contract) {
       console.error("Contract not initialized");
       return;
     }
     try {
-      const tx = await contract.completeTask(taskId);
+      const tx = await contract.completeTask(todoId);
       setIsTxPending(true);
       const receipt = await tx.wait();
-      fetchTasks();
+      fetchTodos();
     } catch (error) {
-      console.error("Error completing task:", error);
+      console.error("Error completing todo:", error);
     } finally {
       setIsTxPending(false)
     }
   }
 
-  const deleteTask = async (taskId: number) => {
+  const deleteTodo = async (todoId: number) => {
     if(!contract) {
       console.error("Contract not initilized");
       return;
     }
 
     try {
-      const tx = await contract.deleteTask(taskId);
+      const tx = await contract.deleteTask(todoId);
       setIsTxPending(true);
       await tx.wait();
-      fetchTasks();
+      fetchTodos();
     } catch (error) {
-      console.error("Error deleting task:", error)
+      console.error("Error deleting todo:", error)
     } finally {
       setIsTxPending(false)
     }
@@ -116,16 +117,16 @@ const TodoList = () => {
       <div className='mb-4'>
         <input
           type='text'
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
           className='border p-2 mr-2 text-black'
-          placeholder='New task'
+          placeholder='New todo'
         />
         <button
-          onClick={createTask}
+          onClick={createTodo}
           className='px-4 py-2 bg-blue-500 text-white rounded'
         >
-          Add Task
+          Add Todo
         </button>
       </div>
       <ul>
@@ -152,21 +153,9 @@ const TodoList = () => {
             </div>
           </div>
         )}
-        {tasks.map(task => (
-          <li key={task.id} className='flex items-center mb-2'>
-            <span className={`flex-grow ${task.completed ? "line-through text-gray-500" : ""
-              }`}>
-              {task.content}
-            </span>
-            <button
-              className={`ml-4 px-2 py-1 ${task.completed ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"} text-white rounded`} onClick={() => completeTask(task.id)}
-              disabled={task.completed}
-            >
-              {task.completed ? "Completed" : "Complete"}
-            </button>
-            <button className="ml-2 px-2 py-1 bg-red-500 text-white rounded" onClick={() => deleteTask(task.id)}>
-              Delete
-            </button>
+        {todos.map(todo => (
+          <li key={todo.id} className='flex items-center mb-2'>
+            <Todo id={todo.id} completed={todo.completed} content={todo.content} completeTodo={completeTodo} deleteTodo={deleteTodo}/>
           </li>
         ))}
       </ul>
