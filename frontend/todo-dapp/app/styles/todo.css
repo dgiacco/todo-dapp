@@ -1,0 +1,45 @@
+.todo-container {
+  width: 300px;
+  min-height: 100px;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.todo-content {
+  flex-grow: 1;
+  overflow-wrap: break-word;
+}
+
+.button-container {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.complete-button {
+  background-color: #4CAF50;
+}
+
+.delete-button {
+  background-color: #F44336;
+}
