@@ -1,13 +1,31 @@
-# Sample Hardhat Project
+# Todo DApp
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+## Overview
 
-Try running some of the following tasks:
+This project is a decentralized Todo application built on Ethereum. It allows users to create, complete, and delete tasks using a smart contract deployed on the Sepolia testnet. The frontend is built with Next.js, TypeScript, and Tailwind CSS.
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+- **Frontend Deployment:** [Vercel Deployment](https://your-vercel-deployment-link)
+- **Smart Contract on Sepolia:** [Etherscan](https://sepolia.etherscan.io/address/your-contract-address)
+
+## Tech Stack
+
+- **Backend:** Solidity (Smart Contracts)
+- **Frontend:** Next.js, TypeScript, Tailwind CSS
+- **Library:** ethers.js
+- **Deployment:** Hardhat (for deploying smart contracts)
+- **Infrastructure:** Alchemy
+
+## Features
+
+- Create, complete, and delete tasks
+- Transaction pending state with a loading modal
+- Responsive UI with a clean layout
+
+## Setup
+
+To get started with development, clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+npm install
