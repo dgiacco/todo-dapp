@@ -17,6 +17,8 @@ const TodoList = () => {
   useEffect(() => {
     const init = async () => {
       if (window.ethereum) {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
