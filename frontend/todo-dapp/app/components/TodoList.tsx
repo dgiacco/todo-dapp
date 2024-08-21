@@ -115,25 +115,32 @@ const TodoList = () => {
   return (
     <div className='p-4'>
       {isTxPending && <PendingTxModal />}
-      <h1 className='text-2xl font-bold mb-4'>Todo List</h1>
-      <div className='mb-4'>
-        <input
-          type='text'
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          className='border p-2 mr-2 text-black'
-          placeholder='New todo'
-        />
-        <button
-          onClick={createTodo}
-          className={`px-4 py-2 text-white rounded ${newTodo.trim() ? "bg-blue-600 hover:bg-blue-400" : "bg-gray-400 cursor-not-allowed"}`}
-          disabled={!newTodo.trim()}
-        >
-          Add Todo
-        </button>
+      <h1 className="flex justify-center items-center text-5xl font-extrabold mb-8 text-transparent">
+        <div className=' bg-clip-text bg-gradient-to-r from-blue-400 to-purple-700'>
+          Todo List Dapp
+        </div>
+      </h1>
+      <div className='flex justify-center items-center'>
+        <div className='mb-4'>
+          <input
+            type='text'
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            maxLength={75}
+            className='border p-2 mr-2 text-black'
+            placeholder='New todo'
+          />
+          <button
+            onClick={createTodo}
+            className={`px-4 py-2 text-white rounded ${newTodo.trim() ? "bg-blue-600 hover:bg-blue-400" : "bg-gray-400 cursor-not-allowed"}`}
+            disabled={!newTodo.trim()}
+          >
+            Add Todo
+          </button>
+        </div>
       </div>
       <div className="flex justify-center items-center p-4">
-        <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full max-w-screen-lg">
+        <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-screen-lg">
           {isLoading && (
             <div className="flex justify-center items-center h-24 col-span-full">
               <div role="status">
