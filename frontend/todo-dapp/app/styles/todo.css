@@ -9,17 +9,27 @@
   justify-content: space-between;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: #010a25;
 }
 
 .todo-content {
   flex-grow: 1;
   overflow-wrap: break-word;
+  background-color: #000c31;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ddd;
+}
+
+.todo-content::first-letter {
+  text-transform: uppercase;
 }
 
 .button-container {
   margin-top: 1rem;
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .button {
@@ -29,17 +39,22 @@
   color: white;
   cursor: pointer;
   border: none;
-  transition: opacity 0.3s ease;
-}
-
-.button:hover {
-  opacity: 0.9;
+  transition: background-color 0.3s ease;
+  flex: 0 0 105px;
 }
 
 .complete-button {
-  background-color: #4CAF50;
+  background-color: #1d917a;
+}
+
+.complete-button:hover {
+  background-color: #27bd9f;
 }
 
 .delete-button {
-  background-color: #F44336;
+  background-color: #cb382e;
+}
+
+.delete-button:hover {
+  background-color: #c8544b;
 }

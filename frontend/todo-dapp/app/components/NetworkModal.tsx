@@ -15,15 +15,14 @@ const NetworkModal: React.FC<NetworkModalProps> = ({ isOpen, onClose, onSwitchNe
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Network Modal"
-      className="modal-content"
+      className="modal-container"
       overlayClassName="modal-overlay"
       shouldCloseOnOverlayClick={false}
-      ariaHideApp={false}
     >
       <div className="modal-overlay">
-        <div className="modal-content">
+        <div className="modal-inner-content">
           <button className="modal-close" onClick={onClose}>&times;</button>
-          <div className="modal-container">
+          <div className="modal-content-container">
             <h2 className="modal-title">Network Switch Needed</h2>
             <p className="modal-message">You need to switch to the Sepolia network to continue.</p>
             <button className="modal-button" onClick={onSwitchNetwork}>Switch to Sepolia</button>

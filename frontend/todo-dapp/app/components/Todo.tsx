@@ -11,7 +11,7 @@ interface TodoProps {
 const Todo = ({ id, completed, content, completeTodo, deleteTodo }: TodoProps) => {
   return (
     <div className="todo-container">
-      <span className={`todo-content text-xl ${completed ? "line-through text-gray-500" : ""}`}>
+      <span className={`todo-content text-xl ${completed ? "line-through text-gray-400" : ""}`}>
         {content}
       </span>
       <div className="button-container">
