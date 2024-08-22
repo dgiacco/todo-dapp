@@ -19,10 +19,10 @@ const TxSuccessfulModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onSee
     >
       <div className="modal-overlay">
         <div className="modal-inner-content">
-          <button className="modal-close" onClick={onClose}>x</button>
+          <button className="modal-close" onClick={onClose}>&times;</button>
           <div className="modal-content-container">
             <h2 className="modal-title">Transaction successful!</h2>
-            <p className="modal-message">You can check this transaction's info on Etherscan</p>
+            <p className="modal-message">You can check this transaction&rsquo;s info on Etherscan</p>
             <button className="modal-button" onClick={onSeeInEtherscan}>See in Etherscan</button>
           </div>
         </div>
