@@ -138,19 +138,16 @@ const TodoList = () => {
   return (
     <div className='p-4'>
       {isTxPending && <PendingTxModal />}
-      {txSuccessful &&
-        <CustomModal
-          isOpen={txSuccessful}
-          onClose={handleCloseTxSuccessfulModal}
-          onButtonMethod={handleSeeInEtherscan}
-          modalTitle='Transaction successful!'
-          modalMsg='Click to see the transaction details'
-          buttonText='See in Etherscan'
-        />}
-      <h1 className="flex justify-center items-center text-5xl font-extrabold mb-8 text-transparent">
-        <div className=' bg-clip-text bg-gradient-to-r from-blue-400 to-purple-700'>
-          Todo List Dapp
-        </div>
+      <CustomModal
+        isOpen={txSuccessful}
+        onClose={handleCloseTxSuccessfulModal}
+        onButtonMethod={handleSeeInEtherscan}
+        modalTitle='Transaction successful! 🎉'
+        modalMsg='Click to see the transaction details'
+        buttonText='See in Etherscan'
+      />
+      <h1 className="flex justify-center items-center text-5xl font-extrabold mb-8 text-blue-400">
+        Todo List Dapp
       </h1>
       <div className='flex justify-center items-center'>
         <div className='mb-4'>
