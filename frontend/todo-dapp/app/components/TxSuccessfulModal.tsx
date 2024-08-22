@@ -1,15 +1,12 @@
 import Modal from 'react-modal'
 
-import '../styles/modalStyles.css'
-
-interface NetworkModalProps {
+interface SuccessModalProps {
   isOpen: boolean
   onClose: () => void
-  onSwitchNetwork: () => void
+  onSeeInEtherscan: () => void
 }
 
-const NetworkModal: React.FC<NetworkModalProps> = ({ isOpen, onClose, onSwitchNetwork }) => {
-
+const TxSuccessfulModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onSeeInEtherscan }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -18,14 +15,15 @@ const NetworkModal: React.FC<NetworkModalProps> = ({ isOpen, onClose, onSwitchNe
       className="modal-container"
       overlayClassName="modal-overlay"
       shouldCloseOnOverlayClick={false}
+      ariaHideApp={false}
     >
       <div className="modal-overlay">
         <div className="modal-inner-content">
           <button className="modal-close" onClick={onClose}>&times;</button>
           <div className="modal-content-container">
-            <h2 className="modal-title">Network Switch Needed</h2>
-            <p className="modal-message">You need to switch to the Sepolia network to continue.</p>
-            <button className="modal-button" onClick={onSwitchNetwork}>Switch to Sepolia</button>
+            <h2 className="modal-title">Transaction successful!</h2>
+            <p className="modal-message">You can check this transaction's info on Etherscan</p>
+            <button className="modal-button" onClick={onSeeInEtherscan}>See in Etherscan</button>
           </div>
         </div>
       </div>
@@ -33,4 +31,4 @@ const NetworkModal: React.FC<NetworkModalProps> = ({ isOpen, onClose, onSwitchNe
   )
 }
 
-export default NetworkModal
+export default TxSuccessfulModal

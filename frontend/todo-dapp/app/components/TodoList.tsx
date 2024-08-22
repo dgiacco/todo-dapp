@@ -1,120 +1,144 @@
 "use client"
 
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { useState, useEffect } from 'react'
+import { ethers } from 'ethers'
+
 import { contractAddress, contractABI } from '../utils/contractInfo'
-import PendingTxModal from './PendingTxModal';
-import Todo from './Todo';
+import PendingTxModal from './PendingTxModal'
+import Todo from './Todo'
+import TxSuccessfulModal from './TxSuccessfulModal'
 
 const TodoList = () => {
   const [todos, setTodos] = useState<{ id: number; content: string; completed: boolean }[]>([])
   const [newTodo, setNewTodo] = useState('')
-  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
-  const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isTxPending, setIsTxPending] = useState(false);
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null)
+  const [contract, setContract] = useState<ethers.Contract | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isTxPending, setIsTxPending] = useState(false)
+  const [txSuccessful, setTxSuccessful] = useState(false)
+  const [currentHash, setCurrentHash] = useState('')
 
   useEffect(() => {
     const init = async () => {
       if (window.ethereum) {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        await window.ethereum.request({ method: 'eth_requestAccounts' })
 
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+        const provider = new ethers.BrowserProvider(window.ethereum)
+        const signer = await provider.getSigner()
+        const contract = new ethers.Contract(contractAddress, contractABI, signer)
 
-        setProvider(provider);
-        setContract(contract);
+        setProvider(provider)
+        setContract(contract)
 
       } else {
-        console.error("Ethereum provider not found");
+        console.error("Ethereum provider not found")
       }
-    };
-    init();
-  }, []);
+    }
+    init()
+  }, [])
 
   useEffect(() => {
     if (contract) {
-      fetchTodos();
+      fetchTodos()
     }
   }, [contract])
 
   const fetchTodos = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     if (contract) {
       try {
-        const todos = await contract.getTasks();
+        const todos = await contract.getTasks()
         setTodos(todos.map((todo: any) => ({
           id: todo.id,
           content: todo.content,
           completed: todo.completed,
-        })));
+        })))
       } catch (error) {
-        console.error("Error fetching todos:", error);
+        console.error("Error fetching todos:", error)
       }
     }
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
 
   const createTodo = async () => {
     if (!contract) {
-      console.error("Contract not initialized");
-      return;
+      console.error("Contract not initialized")
+      return
     }
 
     try {
-      const tx = await contract.createTask(newTodo);
-      setIsTxPending(true);
-      await tx.wait();
-      setNewTodo('');
-      await fetchTodos();
+      const tx = await contract.createTask(newTodo)
+      setIsTxPending(true)
+      await tx.wait()
+      const hash = tx.hash
+      setCurrentHash(hash)
+      setNewTodo('')
+      await fetchTodos()
     } catch (error) {
-      console.error("Error creating todo:", error);
+      console.error("Error creating todo:", error)
     } finally {
       setIsTxPending(false)
+      setTxSuccessful(true)
     }
-  };
+  }
 
   const completeTodo = async (todoId: number) => {
     if (!contract) {
-      console.error("Contract not initialized");
-      return;
+      console.error("Contract not initialized")
+      return
     }
     try {
-      const tx = await contract.completeTask(todoId);
-      setIsTxPending(true);
-      const receipt = await tx.wait();
-      fetchTodos();
+      const tx = await contract.completeTask(todoId)
+      setIsTxPending(true)
+      await tx.wait()
+      const hash = tx.hash
+      setCurrentHash(hash)
+      fetchTodos()
     } catch (error) {
-      console.error("Error completing todo:", error);
+      console.error("Error completing todo:", error)
     } finally {
       setIsTxPending(false)
+      setTxSuccessful(true)
     }
   }
 
   const deleteTodo = async (todoId: number) => {
     if (!contract) {
-      console.error("Contract not initilized");
-      return;
+      console.error("Contract not initilized")
+      return
     }
 
     try {
-      const tx = await contract.deleteTask(todoId);
-      setIsTxPending(true);
-      await tx.wait();
-      fetchTodos();
+      const tx = await contract.deleteTask(todoId)
+      setIsTxPending(true)
+      await tx.wait()
+      const hash = tx.hash
+      setCurrentHash(hash)
+      fetchTodos()
     } catch (error) {
       console.error("Error deleting todo:", error)
     } finally {
       setIsTxPending(false)
+      setTxSuccessful(true)
     }
+  }
+
+  const handleSeeInEtherscan = () => {
+    window.open(`https://sepolia.etherscan.io/tx/${currentHash}`, '_blank')
+    setCurrentHash('')
+    setTxSuccessful(false)
+  }
+
+  const handleCloseTxSuccessfulModal = () => {
+    setTxSuccessful(false)
   }
 
   return (
     <div className='p-4'>
       {isTxPending && <PendingTxModal />}
+      {txSuccessful && <TxSuccessfulModal isOpen={txSuccessful} onClose={handleCloseTxSuccessfulModal} onSeeInEtherscan={handleSeeInEtherscan}/>}
       <h1 className="flex justify-center items-center text-5xl font-extrabold mb-8 text-transparent">
         <div className=' bg-clip-text bg-gradient-to-r from-blue-400 to-purple-700'>
           Todo List Dapp
@@ -127,7 +151,7 @@ const TodoList = () => {
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             maxLength={75}
-            className='border p-2 mr-2 text-black'
+            className='border p-2 mr-2 text-black rounded'
             placeholder='New todo'
           />
           <button
@@ -174,6 +198,6 @@ const TodoList = () => {
 
     </div>
   )
-};
+}
 
-export default TodoList;
+export default TodoList

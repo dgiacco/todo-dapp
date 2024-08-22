@@ -1,3 +1,6 @@
+import { FaTrashAlt } from "react-icons/fa"
+import { FaCheck } from "react-icons/fa"
+
 import '../styles/todo.css'
 
 interface TodoProps {
@@ -21,14 +24,14 @@ const Todo = ({ id, completed, content, completeTodo, deleteTodo }: TodoProps) =
             disabled={completed}
             onClick={() => completeTodo(id)}
           >
-            Complete
-          </button>}
-
+            <FaCheck />
+          </button>
+        }
         <button
           className="button delete-button"
           onClick={() => deleteTodo(id)}
         >
-          Delete
+          <FaTrashAlt />
         </button>
       </div>
     </div>
