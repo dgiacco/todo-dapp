@@ -60,7 +60,7 @@ export default function Home() {
         await provider.send('wallet_switchEthereumChain', [{ chainId: '0xaa36a7' }])
         const newProvider = new ethers.BrowserProvider(window.ethereum)
         setProvider(newProvider)
-        await checkNetwork(provider)
+        await checkNetwork(newProvider)
       } catch (error) {
         console.error("Error switching to Sepolia:", error)
         setIsNetworkSepolia(false)
