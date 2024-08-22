@@ -1,12 +1,18 @@
 import Modal from 'react-modal'
 
-interface SuccessModalProps {
+import '../../styles/modalStyles.css'
+
+interface NetworkModalProps {
   isOpen: boolean
   onClose: () => void
-  onSeeInEtherscan: () => void
+  onButtonMethod: () => void
+  modalTitle: string
+  modalMsg: string
+  buttonText: string
 }
 
-const TxSuccessfulModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onSeeInEtherscan }) => {
+const NetworkModal: React.FC<NetworkModalProps> = ({ isOpen, onClose, onButtonMethod, modalTitle, modalMsg, buttonText }) => {
+
   return (
     <Modal
       isOpen={isOpen}
@@ -21,9 +27,9 @@ const TxSuccessfulModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onSee
         <div className="modal-inner-content">
           <button className="modal-close" onClick={onClose}>&times;</button>
           <div className="modal-content-container">
-            <h2 className="modal-title">Transaction successful!</h2>
-            <p className="modal-message">You can check this transaction&rsquo;s info on Etherscan</p>
-            <button className="modal-button" onClick={onSeeInEtherscan}>See in Etherscan</button>
+            <h2 className="modal-title">{ modalTitle }</h2>
+            <p className="modal-message">{ modalMsg }</p>
+            <button className="modal-button" onClick={onButtonMethod}>{ buttonText }</button>
           </div>
         </div>
       </div>
@@ -31,4 +37,4 @@ const TxSuccessfulModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onSee
   )
 }
 
-export default TxSuccessfulModal
+export default NetworkModal

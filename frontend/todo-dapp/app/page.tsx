@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import NetworkModal from "./components/NetworkModal"
-import TodoList from "./components/TodoList"
 import { ethers } from 'ethers'
+
+import TodoList from "./components/TodoList"
+import CustomModal from './components/common/CustomModal'
 
 export default function Home() {
   const [isNetworkSepolia, setIsNetworkSepolia] = useState(false)
@@ -75,10 +76,13 @@ export default function Home() {
 
   return (
     <>
-      <NetworkModal
+      <CustomModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onSwitchNetwork={handleSwitchNetwork}
+        onButtonMethod={handleSwitchNetwork}
+        modalTitle="Network Switch Needed"
+        modalMsg="You need to switch to the Sepolia network to continue."
+        buttonText="Switch to Sepolia"
       />
       {isNetworkSepolia && <TodoList />}
     </>
